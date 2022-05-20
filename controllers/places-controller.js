@@ -37,30 +37,10 @@ const getPlaceByPlaceId = async (req, res, next) => {
 const getPlacesByUserId = async (req, res, next) => {
   const userId = req.params.uid;
 
-  // let places;
+  let places;
 
-  // try {
-  //   places = await Place.find({ creator: userId }); //returns the filtered array
-  // } catch (err) {
-  //   const error = new HttpError(
-  //     "Fetching places failed, please try again!",
-  //     500
-  //   );
-  //   return next(error);
-  // }
-
-  // if (!places || places.length === 0) {
-  //   return next(
-  //     new HttpError("Could not find any place for the provided user id.", 404)
-  //   );
-  // }
-  // res.json({
-  //   places: places.map((place) => place.toObject({ getters: true })),
-  // });
-
-  let userWithPlaces;
   try {
-    userWithPlaces = await User.findById(userId).populate("places");
+    places = await Place.find({ creator: userId }); //returns the filtered array
   } catch (err) {
     const error = new HttpError(
       "Fetching places failed, please try again!",
@@ -69,17 +49,37 @@ const getPlacesByUserId = async (req, res, next) => {
     return next(error);
   }
 
-  if (!userWithPlaces || userWithPlaces.places.length === 0) {
-    return next(
-      new HttpError("Could not find any place for the provided user id.", 404)
-    );
-  }
-
+  // if (!places || places.length === 0) {
+  //   return next(
+  //     new HttpError("Could not find any place for the provided user id.", 404)
+  //   );
+  // }
   res.json({
-    places: userWithPlaces.places.map((place) =>
-      place.toObject({ getters: true })
-    ),
+    places: places.map((place) => place.toObject({ getters: true })),
   });
+
+  // let userWithPlaces;
+  // try {
+  //   userWithPlaces = await User.findById(userId).populate("places");
+  // } catch (err) {
+  //   const error = new HttpError(
+  //     "Fetching places failed, please try again!",
+  //     500
+  //   );
+  //   return next(error);
+  // }
+
+  // if (!userWithPlaces || userWithPlaces.places.length === 0) {
+  //   return next(
+  //     new HttpError("Could not find any place for the provided user id.", 404)
+  //   );
+  // }
+
+  // res.json({
+  //   places: userWithPlaces.places.map((place) =>
+  //     place.toObject({ getters: true })
+  //   ),
+  // });
 };
 
 // --------------------------------------------------------------------------------------
@@ -125,8 +125,6 @@ const createPlace = async (req, res, next) => {
     const error = new HttpError("Could not find user for provided id", 404);
     return next(error);
   }
-
-  console.log(user);
 
   try {
     const sess = await mongoose.startSession();
