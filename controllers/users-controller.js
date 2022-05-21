@@ -54,8 +54,7 @@ const signup = async (req, res, next) => {
   const createdUser = new User({
     name,
     email,
-    image:
-      "https://res.cloudinary.com/academind-gmbh/image/upload/f_auto,q_auto:eco/dpr_2.0,w_120,c_lfill,g_center,h_120/v1/academind.com/site/manuel",
+    image: req.file.path,
     password,
     places: [],
   });
