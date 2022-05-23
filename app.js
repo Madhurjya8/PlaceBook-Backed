@@ -57,3 +57,5 @@ mongoose
     app.listen(5000);
   })
   .catch((err) => console.log(err));
+
+//mongodb+srv://madhurjya:<password>@cluster0.b3k8r.mongodb.net/?retryWrites=true&w=majority
