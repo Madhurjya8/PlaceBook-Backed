@@ -9,8 +9,6 @@ const placesRoutes = require("./routes/places-routes");
 const usersRoutes = require("./routes/users-routes");
 const HttpError = require("./models/http-error");
 
-const MONGODB_PASS = process.env.MONGODB_PASS;
-
 const app = express();
 
 app.use(bodyParser.json());
@@ -51,11 +49,9 @@ app.use((error, req, res, next) => {
 
 mongoose
   .connect(
-    `mongodb+srv://madhurjya:${MONGODB_PASS}@cluster0.b3k8r.mongodb.net/placebook?retryWrites=true&w=majority`
+    `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.b3k8r.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`
   )
   .then(() => {
     app.listen(5000);
   })
   .catch((err) => console.log(err));
-
-//mongodb+srv://madhurjya:<password>@cluster0.b3k8r.mongodb.net/?retryWrites=true&w=majority
